@@ -1,4 +1,4 @@
-# Wrangling or cleaning the data files
+# adding and visulaising the cleaned data
 from turtle import colormode
 from track import *
 import tempfile
@@ -147,5 +147,141 @@ if __name__ == '__main__':
         "current_csv.csv"
     )
 
+    ########################################################
+    # gauge graph for AQI values
 
+    def aqi_graph(value):
+    #   print(graph_color)
+        color = ''
+        condn = ''
+        if (aqi_val>=0 and aqi_val<=50):
+          color = 'Green'
+          condn = 'Good'
+        elif (aqi_val>=51 and aqi_val<=100):
+          color = '#90EE90'
+          condn = 'Satisfactory'
+        elif (aqi_val>=101 and aqi_val<=200):
+          color = 'yellow'
+          condn = 'Moderate'
+
+        elif (aqi_val>=201 and aqi_val<=300):
+          color = 'orange'
+          condn = 'Poor'
+        elif (aqi_val>=301 and aqi_val<=400):
+          condn = 'Very Poor'
+          color = 'red'
+        elif (aqi_val>=401 and aqi_val<=500):
+          color = '#8B0000' # hex code for dark red
+          condn = 'Severe'
+        elif(aqi_val>500):
+          color = '#8B0000' # hex code for dark red
+          condn = 'Severe'
+        else:
+          color = 'green'
+          condn = 'Good'
+        fig = go.Figure(go.Indicator(
+          value = value,
+          mode = "gauge+number",
+          domain = {'x': [0, 1], 'y': [0, 1]},
+          title = {'text': "AQI is {}".format(condn), 'font': {'size': 26}},
+          gauge = {
+              'axis': {'range': [None, 500]},
+              'bar': {'color': color},# this is the bar color
+              'bgcolor': "white",
+              'borderwidth': 2,
+              'bordercolor': "gray",
+              'threshold': {
+                  'line': {'color': "red", 'width': 4},
+                  'thickness': 0.75,
+                  'value': 401}}))
+
+        # fig.show()
+        return fig
+
+    # accessing the function gauge_graph 
+    # df.style.set_properties(**{"background-color": "black", "color": "lawngreen"})
+    st.dataframe(filter_dataframe(df).style.set_properties(**{"background-color": "black", "color": "lawngreen"}),width=800)
+    with st.sidebar:
+
+        st.plotly_chart(aqi_graph(aqi_val), use_container_width=True,sharing="streamlit", theme="streamlit")
+        st.sidebar.markdown('---')
+
+
+################################################################################################################
+    # condition check
+    if(aqi_val<101):
+        st.markdown('<h3 style="color: lightgreen"> All conditions are normal </h3', unsafe_allow_html=True)
+        st.markdown("""<hr style="height:2px;border:none;color:#333;background-color:#333;" /> """, unsafe_allow_html=True)
+    if (aqi_val>100):
+        st.markdown('<h4 style="color: lightgreen">AQI checked✅ </h4>', unsafe_allow_html=True)
+        st.markdown('---')
+        st.title('Operating on videos')
+        video_file_buffer = st.sidebar.file_uploader("Upload a video", type=['mp4', 'mov', 'avi'])
+        st.sidebar.markdown('---')
+
+        if (video_file_buffer):
+            st.sidebar.text('Input video')
+            st.sidebar.video(video_file_buffer)
+            # save video from streamlit into "videos" folder for future detect
+            with open(os.path.join('videos', video_file_buffer.name), 'wb') as f:
+                f.write(video_file_buffer.getbuffer())
+
+        st.sidebar.markdown('---')
+        st.sidebar.title('Settings')
+        # custom class
+        custom_class = st.sidebar.checkbox('Custom classes')
+        assigned_class_id = [0, 1, 2, 3]
+        names = ['car', 'motorcycle', 'truck', 'bus']
+
+        if custom_class:
+            assigned_class_id = []
+            assigned_class = st.sidebar.multiselect('Select custom classes', list(names))
+            for each in assigned_class:
+                assigned_class_id.append(names.index(each))
+
+        # st.write(assigned_class_id)
+
+        # setting hyperparameter
+        confidence = st.sidebar.slider('Confidence', min_value=0.0, max_value=1.0, value=0.5)
+        line = st.sidebar.number_input('Line position', min_value=0.0, max_value=1.0, value=0.6, step=0.1)
+        st.sidebar.markdown('---')
+
+
+        status = st.empty()
+        stframe = st.empty()
+        if video_file_buffer is None:
+            status.markdown('<font size= "4"> **Status:** Waiting for input </font>', unsafe_allow_html=True)
+        else:
+            status.markdown('<font size= "4"> **Status:** Ready </font>', unsafe_allow_html=True)
+
+        car= st.columns(1)
+        with car:
+            st.markdown('**Car**')
+            car_text = st.markdown('__')
+
+        fps, _,  _, _  = st.columns(1)
+        with fps:
+            st.markdown('**FPS**')
+            fps_text = st.markdown('__')
+
+
+        track_button = st.sidebar.button('START')
+        reset_button = st.sidebar.button('RESET ID')
+        if track_button:
+            # reset ID and count from 0
+            reset()
+            opt = parse_opt()
+            opt.conf_thres = confidence
+            opt.source = f'videos/{video_file_buffer.name}'
+            opt.source = 'https://www.youtube.com/watch?v=5_XSYlAfJZM'   # checking
+
+            # status.markdown('<font size= "4"> **Status:** Running... </font>', unsafe_allow_html=True)
+            with torch.no_grad():
+                detect(opt, stframe, car_text line, fps_text, assigned_class_id)
+            status.markdown('<font size= "4"> **Status:** Finished ! </font>', unsafe_allow_html=True)
+            # end_noti = st.markdown('<center style="color: blue"> FINISH </center>',  unsafe_allow_html=True)
+
+        if reset_button:
+            reset()
+            st.markdown('<h3 style="color: blue"> Reseted ID </h3>', unsafe_allow_html=True)
     
