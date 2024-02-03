@@ -8,7 +8,7 @@ import { NovuProvider } from "@novu/notification-center"
 export default function Home() {
   const matches = useMediaQuery('(max-width: 500px)')
   return (
-    <NovuProvider subscriberId="6537c9e35d52f64aae0e1d8f" applicationIdentifier={'vs4fK7LaheE-'} styles={{
+    <NovuProvider subscriberId={process.env.NEXT_PUBLIC_SUBSCRIBER_ID} applicationIdentifier={process.env.NEXT_PUBLIC_APP_IDENTIFIER ?? ""} styles={{
       layout: {
         root: {
           width: !matches ? "30vw" : "100vw",
