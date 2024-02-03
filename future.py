@@ -1,4 +1,3 @@
-# adding and visulaising the cleaned data
 from turtle import colormode
 from track import *
 import tempfile
@@ -22,12 +21,12 @@ from pandas.api.types import (
     is_numeric_dtype,
     is_object_dtype,
 )
+st.set_page_config(page_title='Monitoring Console')
 st.markdown( """ <style> .sidebar .sidebar-content { background-image: linear-gradient(#2e7bcf,#2e7bcf); color: black; } </style> """, unsafe_allow_html=True )
 
 #################################################################
 # Main function of the program
 if __name__ == '__main__':
-    # st.echo("hi")
     st.markdown("""<style>body {color: blue;background-color: #111;}</style>""", unsafe_allow_html=True)
     ###########################################################################
     # AQI data part
@@ -218,7 +217,11 @@ if __name__ == '__main__':
         st.title('Operating on videos')
         video_file_buffer = st.sidebar.file_uploader("Upload a video", type=['mp4', 'mov', 'avi'])
         st.sidebar.markdown('---')
-
+        st.sidebar.title('Live Video Streaming ')
+        agree = st.sidebar.checkbox('Livestream')
+        if agree:
+            st.sidebar.text('Live Traffic Camera')
+            st.sidebar.video('https://www.youtube.com/watch?v=5_XSYlAfJZM')
         if (video_file_buffer):
             st.sidebar.text('Input video')
             st.sidebar.video(video_file_buffer)
@@ -254,12 +257,25 @@ if __name__ == '__main__':
         else:
             status.markdown('<font size= "4"> **Status:** Ready </font>', unsafe_allow_html=True)
 
-        car= st.columns(1)
+        car, bus, truck, motor = st.columns(4)
         with car:
             st.markdown('**Car**')
             car_text = st.markdown('__')
 
-        fps, _,  _, _  = st.columns(1)
+
+        with bus:
+            st.markdown('**Bus**')
+            bus_text = st.markdown('__')
+
+        with truck:
+            st.markdown('**Truck**')
+            truck_text = st.markdown('__')
+
+        with motor:
+            st.markdown('**Motorcycle**')
+            motor_text = st.markdown('__')
+
+        fps, _,  _, _  = st.columns(4)
         with fps:
             st.markdown('**FPS**')
             fps_text = st.markdown('__')
@@ -273,11 +289,11 @@ if __name__ == '__main__':
             opt = parse_opt()
             opt.conf_thres = confidence
             opt.source = f'videos/{video_file_buffer.name}'
-            opt.source = 'https://www.youtube.com/watch?v=5_XSYlAfJZM'   # checking
+            # opt.source = 'https://www.youtube.com/watch?v=5_XSYlAfJZM'
 
             # status.markdown('<font size= "4"> **Status:** Running... </font>', unsafe_allow_html=True)
             with torch.no_grad():
-                detect(opt, stframe, car_text line, fps_text, assigned_class_id)
+                detect(opt, stframe, car_text, bus_text, truck_text, motor_text, line, fps_text, assigned_class_id)
             status.markdown('<font size= "4"> **Status:** Finished ! </font>', unsafe_allow_html=True)
             # end_noti = st.markdown('<center style="color: blue"> FINISH </center>',  unsafe_allow_html=True)
 
