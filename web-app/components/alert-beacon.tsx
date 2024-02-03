@@ -17,7 +17,3 @@ const AlertBeacon: React.FC<AlertBeaconType> = ({ openAlertHandler }) => {
 };
 
 export default AlertBeacon;
-/**
- *    <span className='font-semibold px-4 py-2 bg-red-500 rounded-3xl text-white animate-bounce'>
-                ⚠️{" "}DeviceId : GJAMD-b40f53f2</span>
- */
