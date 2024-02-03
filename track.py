@@ -37,17 +37,17 @@ from deep_sort.deep_sort import DeepSort
 
 #######################################################################################
 
-from pyfirmata import Arduino
+# from pyfirmata import Arduino
 
-import time
+# import time
 
-board = Arduino ('COM15')   # Here COM15 may be changed on each connection
-pin_8 = board.get_pin ('d:8:o')
-def light_on():
-    pin_8.write(0)   # pin number may varies
-def light_off():
-    pin_8.write(1)
-light_off()
+# board = Arduino ('COM15')
+# pin_8 = board.get_pin ('d:8:o')
+# def light_on():
+#     pin_8.write(0)
+# def light_off():
+#     pin_8.write(1)
+# light_off()
 #########################################################################################
 FILE = Path(__file__).resolve()
 ROOT = FILE.parents[0]  # yolov5 deepsort root directory
@@ -288,12 +288,12 @@ def detect(opt, stframe, car, bus, truck, motor, line, fps_rate, class_id):
                 # if(count==0):
                     # light_off()
                 if (len(data_car)+len(data_bus)+len(data_truck)+len(data_motor)>2):
-                    light_on() #please uncomment me
+                    # light_on() #please uncomment me
                     print("I am ON")
                     # count=1
                 elif (len(data_car)+len(data_bus)+len(data_truck)+len(data_motor)<2):
                     print("I am OFF") 
-                    light_off() #please uncomment me
+                    # light_off() #please uncomment me
     # Print results
     t = tuple(x / seen * 1E3 for x in dt)  # speeds per image
     # print("Average FPS", round(1 / (sum(list(t)) / 1000), 1))
