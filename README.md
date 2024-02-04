@@ -47,6 +47,19 @@ pip install -r requirements.txt
 ```python
 streamlit run future.py --server.maxUploadSize=700
 ```
+* Project Demonstration
+
+1. 
+![1](https://github.com/Hackdata2024/29-teamR/assets/84313712/a9fde4db-b5cd-41e0-b60d-70abccc71c4d)
+
+2.
+![2](https://github.com/Hackdata2024/29-teamR/assets/84313712/3a8d1692-eaca-4812-82af-ca7c41b9ac73)
+
+3.
+![3](https://github.com/Hackdata2024/29-teamR/assets/84313712/28c2cc14-3f8b-4964-92e2-0dee194240b5)
+
+4. 
+![4](https://github.com/Hackdata2024/29-teamR/assets/84313712/420237ac-5bd9-4703-8ea9-e055fdaf5ced)
 
 *Run the Alert app*
 
@@ -62,8 +75,14 @@ npm run dev # run the app default on 3000
 ### Deployment Link (If Deployed): 
 
 ### Explain the Core Code:
+Use of Machine learning Tools and python Framework inorder to contribute to reducing pollution and managing the pollution increase rate in the best possible manner. Integrated with React App and machine learning.
 
 ### Team Mates Details:
+1. Abhilash Gaurav "Machine Learning and Streamlit WebApplication"
+2. Abhigyan Pal "Leading the team doing all documentation part. Heavily deployed on hardware setting up the hardware in-order to receive the signal from software unit."
+3. Mohit Kumar "He worked on the hardware integration of components."
+4. Rajnikant "Build the web application for the alert"
 
+At last we enjoyed the RED BULLS "GIVE you a WINGS"
 
 
